@@ -10,13 +10,9 @@ Shop MVP is a lightweight, full-stack simulation of a walk-in retail store exper
 The system provides:
 
 - Live product and stock display
-- 
 - A digital cart system with auto total updates
-- 
 - Smart product recommendations based on transaction patterns
-- 
 - QR checkout simulation (scan to pay)
-- 
 - A modern UI with dark/light theme and animations
 
  Complete Toolchain & Dependencies
