@@ -31,14 +31,16 @@ Core Tools Installed Locally
 | **GitHub**            | Cloud repo hosting           | Create a repo on [GitHub](https://github.com/) |
 
 
- Project Dependencies (via npm)
 
-These are the Node.js packages installed for the project:
-  Package          	Description
-  express	          Web framework for handling routes and API endpoints
-  sqlite3	          Database driver for SQLite
-  cors	          Middleware for cross-origin requests
-  body-parser	          Middleware for parsing JSON request bodies
+## 📦 Node.js Packages
+ Project Dependencies (via npm)
+| Package | Description |
+|----------|-------------|
+| **express** | Web framework for handling routes and API endpoints |
+| **sqlite3** | Database driver for SQLite |
+| **cors** | Middleware for cross-origin requests |
+| **body-parser** | Middleware for parsing JSON request bodies |
+
   
 Install all at once:
 npm i express sqlite3 cors body-parser
