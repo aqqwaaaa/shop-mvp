@@ -20,13 +20,19 @@ The system provides:
 Here’s everything installed and used throughout the project, both global tools and project dependencies:
 
 Core Tools Installed Locally
+
   Tool	                  Purpose	                        How to Install
   Git	                    Version control	                Download or via terminal: winget install Git.Git
-  Node.js (includes npm)	Backend runtime environment	    Download LTS
-  SQLite	                Lightweight database	          Download or via terminal: Extract sqlite-tools-win-x64-*.zip → add to PATH
-  VS Code (optional)	    Code editor	                    Download
-  PowerShell / CMD	      Terminal interface	            Included on Windows
-  GitHub	                Cloud repo hosting	            Create repo on GitHub
+  
+  Node.js (includes npm)	Backend runtime environment	     Download LTS
+  
+  SQLite	                Lightweight database	            Download or via terminal: Extract sqlite-tools-win-x64-*.zip → add to PATH
+  
+  VS Code (optional)	    Code editor	                     Download
+  
+  PowerShell / CMD	      Terminal interface	              Included on Windows
+  
+  GitHub	                Cloud repo hosting	              Create repo on GitHub
 
  Project Dependencies (via npm)
 
