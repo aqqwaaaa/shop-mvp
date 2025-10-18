@@ -22,6 +22,7 @@ Here’s everything installed and used throughout the project, both global tools
 Core Tools Installed Locally
 
   Tool	                  Purpose	                        How to Install
+		
   Git	                   Version control	                Download or via terminal: winget install Git.Git
   
   Node.js (includes npm)	Backend runtime environment	     Download LTS
