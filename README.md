@@ -21,19 +21,15 @@ Here’s everything installed and used throughout the project, both global tools
 
 Core Tools Installed Locally
 
-  Tool	                  Purpose	                        How to Install
-		
-  Git	                   Version control	                Download or via terminal: winget install Git.Git
-  
-  Node.js (includes npm)	Backend runtime environment	     Download LTS
-  
-  SQLite	                Lightweight database	            Download or via terminal: Extract sqlite-tools-win-x64-*.zip → add to PATH
-  
-  VS Code (optional)	    Code editor	                     Download
-  
-  PowerShell / CMD	      Terminal interface	              Included on Windows
-  
-  GitHub	                Cloud repo hosting	              Create repo on GitHub
+| Tool                 | Purpose                      | How to Install |
+|-----------------------|------------------------------|----------------|
+| **Git**               | Version control              | Download or via terminal: `winget install Git.Git` |
+| **Node.js (includes npm)** | Backend runtime environment | Download **LTS** version |
+| **SQLite**            | Lightweight database         | Download or via terminal: extract `sqlite-tools-win-x64-*.zip` → add to **PATH** |
+| **VS Code** *(optional)* | Code editor                 | Download from [code.visualstudio.com](https://code.visualstudio.com/) |
+| **PowerShell / CMD**  | Terminal interface           | Included on Windows |
+| **GitHub**            | Cloud repo hosting           | Create a repo on [GitHub](https://github.com/) |
+
 
  Project Dependencies (via npm)
 
