@@ -45,7 +45,8 @@ npm i express sqlite3 cors body-parser
 
 ## Project Structure
 
-\`\`\`
+
+```text
 shop-mvp/
 │
 ├── backend/
@@ -62,7 +63,8 @@ shop-mvp/
 │
 ├── .gitignore
 └── README.md
-\`\`\`
+```
+
 
 
 
