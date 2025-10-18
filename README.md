@@ -47,19 +47,20 @@ Project Structure
 shop-mvp/
 │
 ├── backend/
-│ └── server.js # Express backend API + routes
+│   └── server.js            # Express backend API + routes
 │
 ├── database/
-│ ├── shop.db # SQLite database
-│ └── seed.sql # Database schema + sample data
+│   ├── shop.db              # SQLite database
+│   └── seed.sql             # Database schema + sample data
 │
 ├── frontend/
-│ ├── index.html # Main page
-│ ├── app.js # App logic & UI interactions
-│ └── style.css # Styling & animations
+│   ├── index.html           # Main page
+│   ├── app.js               # App logic & UI interactions
+│   └── style.css            # Styling & animations
 │
 ├── .gitignore
 └── README.md
+
 
 ⚙️ Setup & Installation (All Steps from Start)
     Step 1 — Create Project Folder
