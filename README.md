@@ -43,7 +43,9 @@ These are the Node.js packages installed for the project:
 Install all at once:
 npm i express sqlite3 cors body-parser
 
-Project Structure
+## Project Structure
+
+\`\`\`
 shop-mvp/
 │
 ├── backend/
@@ -60,6 +62,8 @@ shop-mvp/
 │
 ├── .gitignore
 └── README.md
+\`\`\`
+
 
 
 ⚙️ Setup & Installation (All Steps from Start)
