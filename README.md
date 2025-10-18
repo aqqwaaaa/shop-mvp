@@ -47,16 +47,16 @@ Project Structure
 shop-mvp/
 │
 ├── backend/
-│   └── server.js            # Express backend API + routes
+│ └── server.js # Express backend API + routes
 │
 ├── database/
-│   ├── shop.db              # SQLite database
-│   └── seed.sql             # Database schema + sample data
+│ ├── shop.db # SQLite database
+│ └── seed.sql # Database schema + sample data
 │
 ├── frontend/
-│   ├── index.html           # Main page
-│   ├── app.js               # App logic & UI interactions
-│   └── style.css            # Styling & animations
+│ ├── index.html # Main page
+│ ├── app.js # App logic & UI interactions
+│ └── style.css # Styling & animations
 │
 ├── .gitignore
 └── README.md
@@ -90,17 +90,18 @@ shop-mvp/
         Server starts on:
        http://localhost:3000
 
-Features Summary:
-Category                Feature	                    Description
-Store                Product listing + search	    Displays all available items and categories
-Cart                 Add, remove, and clear	      Auto-calculates totals and updates UI instantly
-Recommendations      Based on sales data	        Uses co-occurrence & lift/confidence metrics
-QR Checkout          Simulated payment	          Generates QR + fake checkout link
-Theme	               Dark/Light mode toggle	      Saves user preference (localStorage)
-Toasts	             Feedback messages	          e.g., “Cart cleared”, “Dark mode enabled”
-Animations	         Smooth transitions	          Product shimmer, cart bounce, confetti, etc.
-Purchase Flow	       “Purchase Complete” screen	  Auto-clears cart and plays confetti animation
-Shimmer UI	         Loading placeholder	        Animated skeletons while fetching data
+| Category | Feature | Description |
+|-----------|----------|-------------|
+| **Store** | Product listing + search | Displays all available items and categories |
+| **Cart** | Add, remove, and clear | Auto-calculates totals and updates UI instantly |
+| **Recommendations** | Based on sales data | Uses co-occurrence & lift/confidence metrics |
+| **QR Checkout** | Simulated payment | Generates QR + fake checkout link |
+| **Theme** | Dark/Light mode toggle | Saves user preference (`localStorage`) |
+| **Toasts** | Feedback messages | e.g., “Cart cleared”, “Dark mode enabled” |
+| **Animations** | Smooth transitions | Product shimmer, cart bounce, confetti, etc. |
+| **Purchase Flow** | “Purchase Complete” screen | Auto-clears cart and plays confetti animation |
+| **Shimmer UI** | Loading placeholder | Animated skeletons while fetching data |
+
 
 Recommendation Engine Logic
 
@@ -112,12 +113,14 @@ Recommendation Engine Logic
 Testing the API
 
 Example Endpoints
-Method	Endpoint	                                          Description
-GET	    /api/items	                                        Fetch all store items
-GET	    /api/categories	                                    Fetch all unique categories
-GET	    /api/recommendations/top?category=Sport%20Parts&n=5	Get top N products in a category
-POST	  /api/recommendations/cart	                          Get recommended products from current cart
-POST	  /api/checkout	                                      Create simulated checkout QR
+| Method | Endpoint | Description |
+|---------|-----------|-------------|
+| **GET** | `/api/items` | Fetch all store items |
+| **GET** | `/api/categories` | Fetch all unique categories |
+| **GET** | `/api/recommendations/top?category=Sport%20Parts&n=5` | Get top **N** products in a category |
+| **POST** | `/api/recommendations/cart` | Get recommended products from current cart |
+| **POST** | `/api/checkout` | Create simulated checkout QR |
+
 
 Example test (PowerShell / CMD):
 
@@ -142,26 +145,29 @@ Visual Add-ons
 - Animated shimmer while loading
 
 Tech Stack Summary
-Type	            Technology
-Language	        JavaScript (Node.js / ES6)
-Frontend	        HTML, CSS, JS
-Backend	          Node.js (Express)
-Database	        SQLite
-Version Control	  Git + GitHub
-Image Provider	  Picsum Photos / Unsplash
-Editor	          VS Code
-Platform	        Localhost (optional: deployable to Heroku / Render)
+| Type | Technology |
+|------|-------------|
+| **Language** | JavaScript (Node.js / ES6) |
+| **Frontend** | HTML, CSS, JS |
+| **Backend** | Node.js (Express) |
+| **Database** | SQLite |
+| **Version Control** | Git + GitHub |
+| **Image Provider** | Picsum Photos / Unsplash |
+| **Editor** | VS Code |
+| **Platform** | Localhost *(optional: deployable to Heroku / Render)* |
 
-📦 Third-Party Tools & Resources
-Tool / Library	          Purpose	                        URL
-Express.js	              Backend web framework	          https://expressjs.com/
-SQLite	                  Lightweight relational database	https://sqlite.org/
-CORS	                    Middleware for API access	      https://www.npmjs.com/package/cors
-Body-Parser	              JSON body parsing middleware	  https://www.npmjs.com/package/body-parser
-Git	                      Version control	                https://git-scm.com/
-Node.js	                  JS runtime environment	        https://nodejs.org/
-Picsum Photos / Unsplash	Product image placeholders	    https://picsum.photos/
-VS Code	                  Development IDE	                https://code.visualstudio.com/
+
+| Type | Technology |
+|------|-------------|
+| **Language** | JavaScript (Node.js / ES6) |
+| **Frontend** | HTML, CSS, JS |
+| **Backend** | Node.js (Express) |
+| **Database** | SQLite |
+| **Version Control** | Git + GitHub |
+| **Image Provider** | Picsum Photos / Unsplash |
+| **Editor** | VS Code |
+| **Platform** | Localhost *(optional: deployable to Heroku / Render)* |
+
 
 Example Workflow
   1.  Start server → node backend/server.js
