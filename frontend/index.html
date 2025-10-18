@@ -1,75 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Shop MVP</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background: #fafafa;
-      }
-      h1 {
-        color: #333;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-      .card {
-        background: #fff;
-        border-radius: 8px;
-        padding: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      }
-      .card h3 {
-        margin: 5px 0;
-      }
-      button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      button:hover {
-        background: #0056b3;
-      }
-      .cart, .recommendations {
-        background: white;
-        padding: 10px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
-      }
-      .cart-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>🏪 Shop MVP</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🏪 Shop MVP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🏪 Shop MVP</h1>
+      <p>A simple system for improving walk-in store efficiency</p>
+    </header>
 
-    <div>
-      <label>Filter by category:</label>
-      <select id="categoryFilter"></select>
-    </div>
+    <main class="grid">
+      <!-- Left column -->
+      <section class="left">
+        <!-- 🔍 Search + Filter + Clear Cart controls -->
+        <div class="controls">
+          <div class="search">
+            <input id="searchInput" type="search" placeholder="Search products (name or category)..." aria-label="Search products" />
+          </div>
 
-    <h2>Items</h2>
-    <div id="items" class="grid"></div>
+          <div class="left-controls">
+            <label for="categoryFilter">Category:</label>
+            <select id="categoryFilter" aria-label="Filter by category">
+              <option value="all">All</option>
+            </select>
+            <button id="clearCartBtn" class="btn btn-ghost" aria-label="Clear cart">Clear Cart</button>
+          </div>
+        </div>
 
-    <h2>🛒 Cart</h2>
-    <div id="cart" class="cart"></div>
-    <p><strong>Total: $<span id="total">0.00</span></strong></p>
+        <h2>Available Products</h2>
+        <div id="items" class="items-grid" aria-live="polite"></div>
+      </section>
 
-    <h2>⭐ Recommendations</h2>
-    <div id="recommendations" class="recommendations"></div>
+      <!-- Right column -->
+      <aside class="right">
+        <div class="card cart">
+          <h2>Your Cart 🛒</h2>
+          <div id="cart" aria-live="polite">
+            <!-- Cart items will be inserted here -->
+            <p style="color:#6b7280">Your cart is empty — add items to get started.</p>
+          </div>
+          <p><strong>Total:</strong> ₱<span id="total">0.00</span></p>
+        </div>
 
-    <script src="app.js"></script>
-  </body>
+        <div class="card recs">
+          <h2>Recommended for You 💡</h2>
+          <div id="recommendations" aria-live="polite">
+            <p style="color:#6b7280">Add something to your cart to get recommendations.</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <p>Made for <strong>Introduction to Modeling and Simulation (IMODSIM)</strong></p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
 </html>
