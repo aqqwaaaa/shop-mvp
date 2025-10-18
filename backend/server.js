@@ -14,8 +14,8 @@ app.use(bodyParser.json());
 // Connect to database
 const dbPath = path.join(__dirname, '../database/shop.db');
 const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) console.error('❌ Database connection error:', err.message);
-  else console.log('✅ Connected to SQLite database');
+  if (err) console.error(' Database connection error:', err.message);
+  else console.log(' Connected to SQLite database');
 });
 
 // Create helpful indexes and checkout_sessions table if they don't exist
@@ -318,4 +318,4 @@ app.post('/checkout/:session_id/pay', (req, res) => {
 app.use(express.static(path.join(__dirname, '../frontend')));
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

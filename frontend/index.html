@@ -9,8 +9,9 @@
 <body>
   <div class="container">
     <header>
-      <h1>🏪 Shop MVP</h1>
+      <h1>🏪 Shop MVP <span id="cartCount" class="cart-count">0</span></h1>
       <p>A simple system for improving walk-in store efficiency</p>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button>
     </header>
 
     <main class="grid">
@@ -40,7 +41,7 @@
         <div class="card cart">
           <h2>Your Cart 🛒</h2>
           <div id="cart" aria-live="polite">
-            <!-- Cart items will be inserted here -->
+            <!-- Cart items -->
             <p style="color:#6b7280">Your cart is empty — add items to get started.</p>
           </div>
           <p><strong>Total:</strong> ₱<span id="total">0.00</span></p>

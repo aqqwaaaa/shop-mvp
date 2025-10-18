@@ -1,4 +1,4 @@
-// frontend/app.js (with Checkout QR flow)
+// frontend/app.js (clean + fixed + polished)
 const itemsContainer = document.getElementById('items');
 const categoryFilter = document.getElementById('categoryFilter');
 const cartContainer = document.getElementById('cart');
@@ -12,18 +12,70 @@ let cart = [];
 let categories = [];
 let filteredItems = [];
 
-// small helper
+// Helper: format prices nicely
 const fmtPrice = n => {
   const num = Number(n);
   return Number.isFinite(num) ? num.toFixed(2) : '0.00';
 };
+
+// ---------------------- Skeleton Loaders ---------------------- //
+function showSkeletons(container, count = 6) {
+  const skeletonHTML = Array.from({ length: count }).map(() => `
+    <div class="skeleton-card">
+      <div class="skeleton skeleton-img"></div>
+      <div class="skeleton skeleton-line" style="width: 70%;"></div>
+      <div class="skeleton skeleton-line" style="width: 50%;"></div>
+      <div class="skeleton skeleton-line" style="width: 40%;"></div>
+    </div>
+  `).join('');
+  container.innerHTML = skeletonHTML;
+}
+
+
+// ---------------------- Dark Mode Toggle + Toast ---------------------- //
+const themeToggle = document.getElementById('themeToggle');
+
+// Create toast container
+function showToast(msg, type = '') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.classList.add('show'), 50);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 2200);
+}
+
+
+// Load saved theme or default to system
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.setAttribute('data-theme', 'dark');
+  themeToggle.textContent = '☀️';
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const newTheme = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    showToast(newTheme === 'dark' ? '🌙 Dark mode enabled' : '☀️ Light mode enabled');
+  });
+}
+
 
 // ---------------------- Load categories ---------------------- //
 async function loadCategories() {
   try {
     const res = await fetch('/api/categories');
     categories = await res.json();
-    // populate categoryFilter
     if (categoryFilter) {
       categoryFilter.innerHTML = `<option value="all">All</option>` +
         categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
@@ -36,35 +88,43 @@ async function loadCategories() {
 // ---------------------- Load items ---------------------- //
 async function loadItems() {
   try {
+    // show loading skeletons
+    showSkeletons(itemsContainer, 8);
+
     const res = await fetch('/api/items');
     items = await res.json();
-    // remove any accidental header-like rows where name or price is not valid
+
     items = items.filter(it => it && it.name && !/Product_Name/i.test(it.name));
-    // ensure numeric price
     items.forEach(it => { it.price = Number(it.price) || 0; });
     filteredItems = items.slice();
-    showItems(filteredItems);
+
+    // small delay for realism
+    setTimeout(() => showItems(filteredItems), 300);
   } catch (err) {
     console.error('Error loading items:', err);
-    items = [];
-    filteredItems = [];
     itemsContainer.innerHTML = '<p style="color:var(--muted)">Failed to load products.</p>';
   }
 }
 
+
+
 // ---------------------- Show items ---------------------- //
 function showItems(list) {
-  itemsContainer.innerHTML = list.map(item => `
-    <div class="item-card card">
-      <img src="${item.image_url || 'https://cdn-icons-png.flaticon.com/512/679/679720.png'}" alt="${item.name}" class="item-img" />
-      <h3>${item.name}</h3>
-      <span class="category-tag ${(item.category||'other').toLowerCase().replace(/\s/g,'-')}">
-        ${item.category || 'Other'}
-      </span>
-      <p class="price">₱${fmtPrice(item.price)}</p>
-      <button class="btn" onclick="addToCart(${item.id})">Add to Cart</button>
-    </div>
-  `).join('');
+  itemsContainer.innerHTML = list.map(item => {
+    const categoryKeyword = encodeURIComponent(item.category || 'shopping');
+    return `
+      <div class="item-card card">
+        <img src="${item.image_url || `https://picsum.photos/300?${categoryKeyword}&random=${item.id}`}"
+             alt="${item.name}" class="item-img" />
+        <h3>${item.name}</h3>
+        <span class="category-tag ${(item.category||'other').toLowerCase().replace(/\s/g,'-')}">
+          ${item.category || 'Other'}
+        </span>
+        <p class="price">₱${fmtPrice(item.price)}</p>
+        <button class="btn" onclick="addToCart(${item.id})">Add to Cart</button>
+      </div>
+    `;
+  }).join('');
 }
 
 // ---------------------- Cart operations ---------------------- //
@@ -91,7 +151,6 @@ function clearCart() {
 if (clearCartBtn) {
   clearCartBtn.addEventListener('click', () => {
     clearCart();
-    // small visual feedback
     clearCartBtn.classList.add('btn-ghost');
     setTimeout(() => clearCartBtn.classList.remove('btn-ghost'), 200);
   });
@@ -101,7 +160,6 @@ if (clearCartBtn) {
 let checkoutModalEl = null;
 
 function createCheckoutModal() {
-  // avoid recreating
   if (checkoutModalEl) return checkoutModalEl;
 
   const overlay = document.createElement('div');
@@ -138,13 +196,11 @@ function createCheckoutModal() {
   document.body.appendChild(overlay);
   checkoutModalEl = overlay;
 
-  // close events
   document.getElementById('checkout-close').addEventListener('click', closeCheckoutModal);
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) closeCheckoutModal();
   });
 
-  // ESC to close
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && checkoutModalEl) closeCheckoutModal();
   });
@@ -176,37 +232,31 @@ function closeCheckoutModal() {
   if (qrEl) qrEl.innerHTML = '';
   const linkEl = checkoutModalEl.querySelector('#checkout-link');
   if (linkEl) linkEl.innerHTML = '';
+  showPurchaseComplete(); //  triggers animation after closing QR modal
 }
+
 
 // ---------------------- Add Checkout button (in-cart) ---------------------- //
 let currentCheckoutBtn = null;
 
 function createCheckoutButtonIfNeeded() {
-  // remove old button if exists
   if (currentCheckoutBtn) currentCheckoutBtn.remove();
-  // only show if cart has items
   if (!cart.length) {
     currentCheckoutBtn = null;
     return;
   }
-
   const btn = document.createElement('button');
   btn.className = 'btn';
   btn.textContent = 'Checkout (QR)';
   btn.style.marginTop = '10px';
   btn.onclick = handleCheckoutClick;
   currentCheckoutBtn = btn;
-
-  // append at bottom of cartContainer
   cartContainer.appendChild(btn);
 }
 
-// Handler: POST /api/checkout and show modal with QR
+// ---------------------- Checkout handler ---------------------- //
 async function handleCheckoutClick() {
-  if (!cart.length) {
-    alert('Cart is empty');
-    return;
-  }
+  if (!cart.length) return alert('Cart is empty');
   try {
     const cartIds = cart.map(c => c.id);
     const res = await fetch('/api/checkout', {
@@ -214,17 +264,15 @@ async function handleCheckoutClick() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ cart: cartIds })
     });
-
-    if (!res.ok) {
-      const err = await res.json().catch(()=>null);
-      console.error('Checkout create failed', err || res.statusText);
-      alert('Failed to create checkout session');
-      return;
-    }
-
+    if (!res.ok) throw new Error('Checkout failed');
     const data = await res.json();
-    // data: { session_id, checkoutUrl, qrDataUrl, total }
-    showCheckoutModal({ qrDataUrl: data.qrDataUrl, checkoutUrl: data.checkoutUrl, total: data.total });
+// data: { session_id, checkoutUrl, qrDataUrl, total }
+showCheckoutModal({ qrDataUrl: data.qrDataUrl, checkoutUrl: data.checkoutUrl, total: data.total });
+
+//  Success toast
+showToast(' Checkout QR ready — scan to pay', 'success');
+
+
   } catch (err) {
     console.error('Checkout error:', err);
     alert('Checkout failed. See console for details.');
@@ -233,6 +281,13 @@ async function handleCheckoutClick() {
 
 // ---------------------- Update cart UI + total ---------------------- //
 function updateCart() {
+  // Empty cart case early
+  if (!cart.length) {
+    cartContainer.innerHTML = '<p style="color:var(--muted)">Your cart is empty — add items to get started.</p>';
+    totalDisplay.textContent = '0.00';
+    return;
+  }
+
   cartContainer.innerHTML = '';
   cart.forEach(c => {
     const div = document.createElement('div');
@@ -247,29 +302,36 @@ function updateCart() {
       </div>
     `;
     cartContainer.appendChild(div);
-    setTimeout(() => div.classList.add('added'), 80);
+
+
+const cartCountEl = document.getElementById('cartCount');
+if (cartCountEl) {
+  const count = cart.reduce((sum, c) => sum + c.qty, 0);
+  if (count > 0) {
+    cartCountEl.textContent = count;
+    cartCountEl.style.display = 'inline-flex';
+    cartCountEl.classList.add('bump');
+    setTimeout(() => cartCountEl.classList.remove('bump'), 400);
+  } else {
+    cartCountEl.style.display = 'none';
+  }
+}
+
+
   });
 
-  // Add Checkout button (if cart not empty)
   createCheckoutButtonIfNeeded();
 
   const total = cart.reduce((sum, c) => sum + (Number(c.price) || 0) * c.qty, 0);
   totalDisplay.textContent = total.toFixed(2);
 
-  // bounce
   totalDisplay.classList.add('total-bounce');
   setTimeout(() => totalDisplay.classList.remove('total-bounce'), 420);
 
-  // Refresh recommendations
   showCartRecommendations();
-
-  // If cart empty, show nice placeholder in cart area
-  if (!cart.length) {
-    cartContainer.innerHTML = '<p style="color:var(--muted)">Your cart is empty — add items to get started.</p>';
-  }
 }
 
-// ---------------------- Show recommendations based on cart ---------------------- //
+// ---------------------- Show recommendations ---------------------- //
 async function showCartRecommendations() {
   if (!recContainer) return;
   if (cart.length === 0) {
@@ -279,6 +341,7 @@ async function showCartRecommendations() {
 
   const cartIds = cart.map(c => c.id);
   try {
+    showSkeletons(recContainer, 4);
     const res = await fetch('/api/recommendations/cart', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -293,7 +356,8 @@ async function showCartRecommendations() {
 
     recContainer.innerHTML = recs.map(r => `
       <div class="item-card card">
-        <img src="${r.image_url || 'https://cdn-icons-png.flaticon.com/512/679/679720.png'}" alt="${r.name}" class="item-img" />
+        <img src="${r.image_url || `https://picsum.photos/300?${encodeURIComponent(r.category || 'shopping')}&random=${r.id}`}" 
+             alt="${r.name}" class="item-img" />
         <h3>${r.name}</h3>
         <span class="category-tag ${(r.category||'other').toLowerCase().replace(/\s/g,'-')}">${r.category || 'Other'}</span>
         <p class="price">₱${fmtPrice(r.price)}</p>
@@ -301,22 +365,79 @@ async function showCartRecommendations() {
       </div>
     `).join('');
 
-    // small staggered reveal
     recContainer.querySelectorAll('.item-card').forEach((el, i) => {
       el.style.animationDelay = `${i * 0.04}s`;
     });
-
   } catch (err) {
     console.error('Error loading recommendations:', err);
     recContainer.innerHTML = '<p style="color:var(--muted)">Error loading recommendations.</p>';
   }
 }
 
-// ---------------------- Search and filter logic ---------------------- //
+
+// ---------------------- Purchase Complete Animation ---------------------- //
+// ---------------------- Purchase Complete Animation + Cart Reset ---------------------- //
+function showPurchaseComplete() {
+  const overlay = document.createElement('div');
+  overlay.className = 'purchase-overlay';
+
+  overlay.innerHTML = `
+    <div class="purchase-box">
+      <div class="purchase-check"></div>
+      <div class="purchase-text">Purchase Complete!</div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // optional confetti 🎉
+  setTimeout(() => launchConfetti(), 400);
+
+  // auto-remove after 3 seconds + reset cart
+  setTimeout(() => {
+    overlay.style.opacity = 0;
+    setTimeout(() => {
+      overlay.remove();
+      //  Clear cart after animation
+      cart = [];
+      updateCart();
+      showToast('🛒 Cart cleared after purchase', 'success');
+    }, 400);
+  }, 3000);
+}
+
+
+// optional confetti burst
+function launchConfetti() {
+  const count = 60;
+  for (let i = 0; i < count; i++) {
+    const conf = document.createElement('div');
+    conf.style.position = 'fixed';
+    conf.style.width = '8px';
+    conf.style.height = '8px';
+    conf.style.borderRadius = '50%';
+    conf.style.background = `hsl(${Math.random() * 360}, 90%, 60%)`;
+    conf.style.left = `${Math.random() * 100}%`;
+    conf.style.top = '50%';
+    conf.style.opacity = 1;
+    conf.style.zIndex = 10000;
+    conf.style.transition = 'all 1.2s ease-out';
+    document.body.appendChild(conf);
+
+    setTimeout(() => {
+      conf.style.top = `${90 + Math.random() * 10}%`;
+      conf.style.opacity = 0;
+      conf.style.transform = `translateY(-${Math.random() * 200}px) rotate(${Math.random() * 360}deg)`;
+    }, 20);
+
+    setTimeout(() => conf.remove(), 1500);
+  }
+}
+
+// ---------------------- Search and filter ---------------------- //
 function applyFilters() {
   const q = (searchInput && searchInput.value || '').trim().toLowerCase();
   const cat = (categoryFilter && categoryFilter.value) || 'all';
-
   filteredItems = items.filter(it => {
     const name = (it.name || '').toLowerCase();
     const category = (it.category || '').toLowerCase();
@@ -324,17 +445,16 @@ function applyFilters() {
     const matchesCategory = (cat === 'all') || (it.category === cat);
     return matchesQuery && matchesCategory;
   });
-
   showItems(filteredItems);
 }
 
-// events
-if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
+// Debounce search input
 if (searchInput) {
+  let searchTimeout;
   searchInput.addEventListener('input', () => {
-    applyFilters();
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(applyFilters, 200);
   });
-  // optional: press ESC to clear
   searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       searchInput.value = '';
@@ -342,8 +462,8 @@ if (searchInput) {
     }
   });
 }
+if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
 
-// ---------------------- Initialize ---------------------- //
+// ---------------------- Init ---------------------- //
 console.log('🟢 Frontend loaded');
-loadCategories();
-loadItems();
+Promise.all([loadCategories(), loadItems()]);
