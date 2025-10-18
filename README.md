@@ -70,34 +70,47 @@ shop-mvp/
 
 
 
-⚙️ Setup & Installation (All Steps from Start)
-    Step 1 — Create Project Folder
-      mkdir shop-mvp
-      cd shop-mvp
-    Step 2 — Initialize Git Repository
-      git init
-      echo "# Shop MVP" > README.md
-    Step 3 — Initialize Node Project
-      npm init -y
-    Step 4 — Install Dependencies  
-      npm i express sqlite3 cors body-parser
-    Step 5 — Create Folder Structure
-      backend/
-      database/
-      frontend/
-    Step 6 — Create and Seed Database
-    Inside the /database folder:
-      sqlite3 shop.db < seed.sql
-    Check:
-      sqlite3 shop.db
-      .tables
-    You should see:
-      categories  order_items  orders  products
-    Step 7 — Run Server
-      From the project root:
-      node backend/server.js
-        Server starts on:
-       http://localhost:3000
+##  Setup & Installation (All Steps from Start)
+
+```text
+# Step 1 — Create Project Folder
+mkdir shop-mvp
+cd shop-mvp
+
+# Step 2 — Initialize Git Repository
+git init
+echo "# Shop MVP" > README.md
+
+# Step 3 — Initialize Node Project
+npm init -y
+
+# Step 4 — Install Dependencies
+npm i express sqlite3 cors body-parser
+
+# Step 5 — Create Folder Structure
+backend/
+database/
+frontend/
+
+# Step 6 — Create and Seed Database
+# Inside the /database folder:
+sqlite3 shop.db < seed.sql
+
+# Check:
+sqlite3 shop.db
+.tables
+
+# You should see:
+# categories  order_items  orders  products
+
+# Step 7 — Run Server
+# From the project root:
+node backend/server.js
+
+# Server starts on:
+# http://localhost:3000
+```
+
 
 | Category | Feature | Description |
 |-----------|----------|-------------|
